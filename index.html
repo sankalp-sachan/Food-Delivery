@@ -8,5 +8,41 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      (function(){
+  // Disable right-click
+  document.addEventListener("contextmenu", e => e.preventDefault());
+
+  // Disable common DevTools keys
+  document.addEventListener("keydown", e => {
+    if (
+      e.key === "F12" ||
+      (e.ctrlKey && e.shiftKey && ["I","J","C"].includes(e.key.toUpperCase())) ||
+      (e.ctrlKey && e.key.toUpperCase() === "U")
+    ) {
+      e.preventDefault();
+    }
+  });
+
+  // Detect DevTools and delete script
+  function detectDevTools() {
+    const threshold = 200;
+    if (
+      window.outerWidth - window.innerWidth > threshold ||
+      window.outerHeight - window.innerHeight > threshold
+    ) {
+      // Block the page
+      document.body.innerHTML =
+        "<h1 style='color:red;text-align:center;margin-top:20%'>⚠️ Access Blocked – DevTools detected!</h1>";
+
+      // Remove this script from DOM
+      let script = document.getElementById("protect-script");
+      if (script) script.remove();
+    }
+  }
+
+  setInterval(detectDevTools, 1000);
+})();
+    </script>
   </body>
 </html>
